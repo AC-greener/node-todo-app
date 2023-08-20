@@ -32,4 +32,24 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
         throw error
     }
 }
-export { getTodos, addTodo }
+
+const deleteTodo = async (req: Request, res: Response): Promise<void> => {
+    console.log('req.params :>> ', req.params.id)
+    //Todo deleteOne use req.params.id
+    try {
+        const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(
+            req.params.id
+        )
+        console.log('deletedTodo :>> ', deletedTodo);
+        const allTodos: ITodo[] = await Todo.find()
+        res.status(200).json({
+            message: "Todo deleted",
+            todos: allTodos,
+        })
+    } catch (error) {
+        console.log('error :>> ', error);
+        throw error
+    }
+
+}
+export { getTodos, addTodo, deleteTodo }

@@ -5,3 +5,8 @@ export interface ITodo extends Document {
     description: string
     status: boolean
 }
+// user interface
+export interface IUser extends Document {
+    username: string
+    password: string
+}

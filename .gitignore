@@ -1,7 +1,9 @@
 
 /client/node_modules
+/server/nodemon.json
 /server/node_modules
 
 /client/build
 pass.txt
+.vscode
 

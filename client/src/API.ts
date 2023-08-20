@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 
+//set axios with credentials
+// axios.defaults.withCredentials = true;
 const baseUrl: string = 'http://localhost:4000'
 
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
@@ -7,6 +9,32 @@ export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
     const todos: AxiosResponse<ApiDataType> = await axios.get(
       baseUrl + '/todos'
     )
+    return todos
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+export const getIndex = async (): Promise<AxiosResponse<ApiDataType>> => {
+  try {
+    const todos: AxiosResponse<ApiDataType> = await axios.get(
+      baseUrl + '/index', {
+        withCredentials: true
+      }
+    )
+    
+    return todos
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+export const getRoot = async (): Promise<AxiosResponse<ApiDataType>> => {
+  try {
+    const todos: AxiosResponse<ApiDataType> = await axios.get(
+      baseUrl + '/', {
+        withCredentials: true
+      }
+    )
+    
     return todos
   } catch (error: any) {
     throw new Error(error)

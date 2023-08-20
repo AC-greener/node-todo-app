@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './login.css'; // 导入样式文件
-import {login} from '../Api'
+import {login} from '../api'
 interface LoginProps {
   // 定义组件的 props 类型
 }

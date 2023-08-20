@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import TodoItem from './components/TodoItem'
 import AddTodo from './components/AddTodo'
 import Login from './components/Login';
-import { getTodos, addTodo, updateTodo, deleteTodo, getRoot } from './API'
-
+import { getTodos, addTodo, updateTodo, deleteTodo, getRoot } from './api'
+import Upload from './components/Upload';
 const App: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([])
 
@@ -54,6 +54,7 @@ const App: React.FC = () => {
   return (
     <main className='App'>
       <h1>My Todos</h1>
+      <Upload/>
       <Login />
       <AddTodo saveTodo={handleSaveTodo} />
       {todos.map((todo: ITodo) => (

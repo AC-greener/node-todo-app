@@ -20,6 +20,7 @@ const router = (0, express_1.Router)();
 //   }
 // })
 router.post("/login", login_1.login);
+router.post("/upload", login_1.upload);
 router.get("/todos", todos_1.getTodos);
 router.post("/add-todo", todos_1.addTodo);
 // router.put("/edit-todo/:id", updateTodo)

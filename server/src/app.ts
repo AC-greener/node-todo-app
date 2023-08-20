@@ -11,7 +11,9 @@ const MongoStore = require("connect-mongo");
 const PORT: string | number = process.env.PORT || 4000;
 
 const dbUser = process.env.MONGO_USER;
-const dbPassword = process.env.MONGO_PASSWORD
+const dbPassword = process.env.MONGO_PASSWORD;
+const oneDay = 1000 * 60 * 60 * 24;
+
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -28,28 +30,37 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: `mongodb+srv://${dbUser}:${dbPassword}@cluster0.s5kyres.mongodb.net/?retryWrites=true&w=majority` }),
+    cookie: { maxAge: oneDay },
+    store: MongoStore.create({
+      mongoUrl: `mongodb+srv://${dbUser}:${dbPassword}@cluster0.s5kyres.mongodb.net/?retryWrites=true&w=majority`,
+    }),
   })
 );
 
 app.use(todoRoutes);
-app.get('/', (req, res) => {
-  
-  console.log('req.session :>> ', req.session);
-  console.log("sessionID", req.sessionID)
-  res.send('Hello World!')
-})
 const uri: string = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.s5kyres.mongodb.net/?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 // mongoose.set('useFindAndModify', false)
 
+function startServer() {
+  app.listen(PORT, () =>
+    console.log(`Server running on http://localhost:${PORT}`)
+  );
+}
 mongoose
   .connect(uri)
-  .then(() =>
-    app.listen(PORT, () =>
-      console.log(`Server running on http://localhost:${PORT}`)
-    )
-  )
+  .then(() => {
+    if (require.main === module) {
+      // application run directly; start app server
+      startServer();
+    } else {
+      // application imported as a module via "require": export function to create server
+      module.exports = startServer;
+    }
+    // app.listen(PORT, () =>
+    //   console.log(`Server running on http://localhost:${PORT}`)
+    // )
+  })
   .catch((error) => {
     throw error;
   });

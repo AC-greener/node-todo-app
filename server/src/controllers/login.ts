@@ -7,6 +7,12 @@ const login = async (req: Request, res: Response): Promise<void> => {
     username,
     password
   })
+  req.session.user = {
+    username,
+    password
+  }
+  console.log("req.session", req.session)
+  console.log("req.session", req.session.id)
   const newUser = await user.save()
   console.log('newUser :>> ', newUser)
   res.status(200).json({ message: "login success" })

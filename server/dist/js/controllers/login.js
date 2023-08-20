@@ -21,6 +21,12 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         username,
         password
     });
+    req.session.user = {
+        username,
+        password
+    };
+    console.log("req.session", req.session);
+    console.log("req.session", req.session.id);
     const newUser = yield user.save();
     console.log('newUser :>> ', newUser);
     res.status(200).json({ message: "login success" });

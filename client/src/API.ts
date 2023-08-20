@@ -1,9 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 
 //set axios with credentials
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 const baseUrl: string = 'http://localhost:4000'
-
+type loginType = {
+  username: string,
+  password: string
+}
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
     const todos: AxiosResponse<ApiDataType> = await axios.get(
@@ -14,15 +17,13 @@ export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
     throw new Error(error)
   }
 }
-export const getIndex = async (): Promise<AxiosResponse<ApiDataType>> => {
+export const login = async (data: loginType): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const todos: AxiosResponse<ApiDataType> = await axios.get(
-      baseUrl + '/index', {
-        withCredentials: true
-      }
+    const res: AxiosResponse<ApiDataType> = await axios.post(
+      baseUrl + '/login', data
     )
     
-    return todos
+    return res
   } catch (error: any) {
     throw new Error(error)
   }
@@ -30,9 +31,7 @@ export const getIndex = async (): Promise<AxiosResponse<ApiDataType>> => {
 export const getRoot = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
     const todos: AxiosResponse<ApiDataType> = await axios.get(
-      baseUrl + '/', {
-        withCredentials: true
-      }
+      baseUrl + '/'
     )
     
     return todos

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import TodoItem from './components/TodoItem'
 import AddTodo from './components/AddTodo'
-import { getTodos, addTodo, updateTodo, deleteTodo, getIndex, getRoot } from './API'
+import Login from './components/Login';
+import { getTodos, addTodo, updateTodo, deleteTodo, getRoot } from './API'
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([])
 
   useEffect(() => {
-    fetchTodos()
-    getIndex()
-    getRoot()
+    // fetchTodos()
   }, [])
 
   const fetchTodos = (): void => {
@@ -55,6 +54,7 @@ const App: React.FC = () => {
   return (
     <main className='App'>
       <h1>My Todos</h1>
+      <Login />
       <AddTodo saveTodo={handleSaveTodo} />
       {todos.map((todo: ITodo) => (
         <TodoItem

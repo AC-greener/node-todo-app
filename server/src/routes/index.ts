@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express"
 import { getTodos, addTodo, deleteTodo } from "../controllers/todos"
-import { login, upload } from "../controllers/login"
+import { login, regist } from "../controllers/login"
+import { upload } from "../controllers/upload"
 const router: Router = Router()
 
 // Access the session as req.session
@@ -19,6 +20,7 @@ const router: Router = Router()
 //   }
 // })
 router.post("/login", login)
+router.post("/regist", regist)
 router.post("/upload", upload)
 
 router.get("/todos", getTodos)

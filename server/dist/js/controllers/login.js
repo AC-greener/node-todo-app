@@ -12,54 +12,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.upload = exports.login = void 0;
+exports.regist = exports.login = void 0;
 const user_1 = __importDefault(require("../models/user"));
-const formidable_1 = __importDefault(require("formidable"));
-const file_1 = __importDefault(require("../models/file"));
-const fs_1 = __importDefault(require("fs"));
+const bcrypt = require("bcrypt");
+// Example of adding additional properties to SessionData using declaration merging
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.session.userId) {
+        res.status(200).json({ message: "already login" });
+        return;
+    }
     const { username, password } = req.body;
-    // save user info to db
-    const user = new user_1.default({
-        username,
-        password
-    });
-    req.session.user = {
-        username,
-        password
-    };
+    const user = yield user_1.default.findOne({ username });
+    if (!user) {
+        res.status(401).json({ message: 'User not found' });
+        return;
+    }
+    console.log('user :>> ', user);
+    // 验证密码
+    const passwordMatch = yield bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+        res.status(401).json({ message: 'Invalid password' });
+        return;
+    }
+    req.session.userId = user._id;
     console.log("req.session", req.session);
     console.log("req.session", req.session.id);
-    const newUser = yield user.save();
-    console.log('newUser :>> ', newUser);
     res.status(200).json({ message: "login success" });
 });
 exports.login = login;
-const upload = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const form = (0, formidable_1.default)({});
-    form.parse(req, (err, fields, files) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err) {
-            next(err);
-            return;
-        }
-        const uploadImg = files.file[0];
-        console.log('files :>> ', files.file[0]);
-        console.log('uploadImg :>> ', uploadImg.filepath);
-        try {
-            const imgBuffer = fs_1.default.readFileSync(uploadImg.filepath);
-            const image = new file_1.default({
-                name: uploadImg.newFilename,
-                data: imgBuffer,
-                contentType: uploadImg.mimetype,
+const regist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { username, password } = req.body;
+    const existUser = yield user_1.default.findOne({ username });
+    if (existUser) {
+        res.status(400).json({ message: "user already exist" });
+        return;
+    }
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, function (err, hash) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Store hash in your password DB.
+            console.log("hash :>> ", hash);
+            // save user info to db
+            const user = new user_1.default({
+                username,
+                password: hash,
             });
-            yield image.save();
-        }
-        catch (err) {
-            next(err);
-            return;
-        }
-        //save img file to db
-        res.json({ fields, files });
-    }));
+            const newUser = yield user.save();
+            console.log("newUser :>> ", newUser);
+            res.status(200).json({ message: "register success" });
+        });
+    });
 });
-exports.upload = upload;
+exports.regist = regist;

@@ -23,6 +23,7 @@ app.use(
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
+// app.use(express.ur);
 
 app.use(
   session({
@@ -50,13 +51,14 @@ function startServer() {
 mongoose
   .connect(uri)
   .then(() => {
-    if (require.main === module) {
-      // application run directly; start app server
-      startServer();
-    } else {
-      // application imported as a module via "require": export function to create server
-      module.exports = startServer;
-    }
+    startServer();
+    // if (require.main === module) {
+    //   // application run directly; start app server
+    //   startServer();
+    // } else {
+    //   // application imported as a module via "require": export function to create server
+    //   module.exports = startServer;
+    // }
     // app.listen(PORT, () =>
     //   console.log(`Server running on http://localhost:${PORT}`)
     // )

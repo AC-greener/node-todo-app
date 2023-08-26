@@ -23,6 +23,7 @@ app.use((0, cors_1.default)({
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express_1.default.json());
+// app.use(express.ur);
 app.use(session({
     name: "uid",
     secret: "keyboard cat",
@@ -43,14 +44,14 @@ function startServer() {
 mongoose_1.default
     .connect(uri)
     .then(() => {
-    if (require.main === module) {
-        // application run directly; start app server
-        startServer();
-    }
-    else {
-        // application imported as a module via "require": export function to create server
-        module.exports = startServer;
-    }
+    startServer();
+    // if (require.main === module) {
+    //   // application run directly; start app server
+    //   startServer();
+    // } else {
+    //   // application imported as a module via "require": export function to create server
+    //   module.exports = startServer;
+    // }
     // app.listen(PORT, () =>
     //   console.log(`Server running on http://localhost:${PORT}`)
     // )

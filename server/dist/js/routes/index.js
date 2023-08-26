@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const todos_1 = require("../controllers/todos");
 const login_1 = require("../controllers/login");
+const upload_1 = require("../controllers/upload");
 const router = (0, express_1.Router)();
 // Access the session as req.session
 // router.get('/index', function(req: Request, res: Response, next) {
@@ -20,7 +21,8 @@ const router = (0, express_1.Router)();
 //   }
 // })
 router.post("/login", login_1.login);
-router.post("/upload", login_1.upload);
+router.post("/regist", login_1.regist);
+router.post("/upload", upload_1.upload);
 router.get("/todos", todos_1.getTodos);
 router.post("/add-todo", todos_1.addTodo);
 // router.put("/edit-todo/:id", updateTodo)

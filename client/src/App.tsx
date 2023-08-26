@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import TodoItem from './components/TodoItem'
 import AddTodo from './components/AddTodo'
-import Login from './components/Login';
-import { getTodos, addTodo, updateTodo, deleteTodo, getRoot } from './api'
+import { getTodos, addTodo, updateTodo, deleteTodo } from './api'
+import { useNavigate } from "react-router-dom";
 import Upload from './components/Upload';
 const App: React.FC = () => {
+  const navigate = useNavigate();
   const [todos, setTodos] = useState<ITodo[]>([])
 
   useEffect(() => {
-    // fetchTodos()
+    fetchTodos()
   }, [])
 
   const fetchTodos = (): void => {
@@ -21,12 +22,13 @@ const App: React.FC = () => {
    e.preventDefault()
    addTodo(formData)
    .then(({ status, data }) => {
-    if (status !== 201) {
-      throw new Error('Error! Todo not saved')
-    }
+    console.log('status :>> ', status);
     setTodos(data.todos)
   })
-  .catch((err) => console.log(err))
+  .catch((err) => {
+    console.log('11 :>> ', err);
+    return navigate("/")
+  })
 }
 
   const handleUpdateTodo = (todo: ITodo): void => {
@@ -54,8 +56,6 @@ const App: React.FC = () => {
   return (
     <main className='App'>
       <h1>My Todos</h1>
-      <Upload/>
-      <Login />
       <AddTodo saveTodo={handleSaveTodo} />
       {todos.map((todo: ITodo) => (
         <TodoItem

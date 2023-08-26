@@ -12,16 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.regist = exports.login = void 0;
+exports.needLogin = exports.checkLogin = exports.regist = exports.login = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt = require("bcrypt");
 // Example of adding additional properties to SessionData using declaration merging
-const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const needLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.session.userId) {
+        next();
+    }
+    else {
+        res.status(401).json({ message: "please login" });
+        return;
+    }
+});
+exports.needLogin = needLogin;
+const checkLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.session.userId) {
         res.status(200).json({ message: "already login" });
         return;
     }
+    else {
+        next();
+    }
+});
+exports.checkLogin = checkLogin;
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
+    console.log('username, password :>> ', username, password);
     const user = yield user_1.default.findOne({ username });
     if (!user) {
         res.status(401).json({ message: 'User not found' });

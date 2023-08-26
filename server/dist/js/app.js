@@ -23,7 +23,7 @@ app.use((0, cors_1.default)({
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express_1.default.json());
-// app.use(express.ur);
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use(session({
     name: "uid",
     secret: "keyboard cat",

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import todoRoutes from "./routes";
 const morgan = require("morgan");
+
 const cookieParser = require("cookie-parser");
 const app: Express = express();
 
@@ -23,7 +24,7 @@ app.use(
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
-// app.use(express.ur);
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({

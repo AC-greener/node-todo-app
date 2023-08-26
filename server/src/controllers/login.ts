@@ -5,12 +5,25 @@ const bcrypt = require("bcrypt");
 
 // Example of adding additional properties to SessionData using declaration merging
 
-const login = async (req: Request, res: Response): Promise<void> => {
+const needLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  if(req.session.userId) {
+    next();
+  } else {
+    res.status(401).json({ message: "please login" });
+    return;
+  }
+}
+const checkLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if(req.session.userId) {
     res.status(200).json({ message: "already login" });
     return;
+  } else {
+    next();
   }
+}
+const login = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
+  console.log('username, password :>> ', username, password);
   const user = await User.findOne({ username });
   if (!user) {
     res.status(401).json({ message: 'User not found' });
@@ -52,4 +65,4 @@ const regist = async (req: Request, res: Response): Promise<void> => {
   });
 };
 
-export { login, regist };
+export { login, regist, checkLogin, needLogin };

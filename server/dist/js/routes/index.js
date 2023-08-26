@@ -20,6 +20,8 @@ const router = (0, express_1.Router)();
 //     res.end('welcome to the session demo. refresh!')
 //   }
 // })
+router.use("/add-todo", login_1.needLogin);
+router.post("/login", login_1.checkLogin);
 router.post("/login", login_1.login);
 router.post("/regist", login_1.regist);
 router.post("/upload", upload_1.upload);

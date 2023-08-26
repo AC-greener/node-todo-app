@@ -2,13 +2,12 @@ import express, { Express } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import todoRoutes from "./routes";
-const morgan = require("morgan");
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import session  from "express-session";
+import MongoStore  from "connect-mongo";
 
-const cookieParser = require("cookie-parser");
 const app: Express = express();
-
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const PORT: string | number = process.env.PORT || 4000;
 
 const dbUser = process.env.MONGO_USER;

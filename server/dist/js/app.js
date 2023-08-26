@@ -7,11 +7,11 @@ const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const routes_1 = __importDefault(require("./routes"));
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
+const morgan_1 = __importDefault(require("morgan"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const express_session_1 = __importDefault(require("express-session"));
+const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const app = (0, express_1.default)();
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const PORT = process.env.PORT || 4000;
 const dbUser = process.env.MONGO_USER;
 const dbPassword = process.env.MONGO_PASSWORD;
@@ -20,17 +20,17 @@ app.use((0, cors_1.default)({
     origin: "http://localhost:5173",
     credentials: true,
 }));
-app.use(morgan("dev"));
-app.use(cookieParser());
+app.use((0, morgan_1.default)("dev"));
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use(session({
+app.use((0, express_session_1.default)({
     name: "uid",
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: oneDay },
-    store: MongoStore.create({
+    store: connect_mongo_1.default.create({
         mongoUrl: `mongodb+srv://${dbUser}:${dbPassword}@cluster0.s5kyres.mongodb.net/?retryWrites=true&w=majority`,
     }),
 }));

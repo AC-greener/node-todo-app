@@ -1,4 +1,4 @@
-var cluster = require("cluster");
+import cluster from "cluster";
 
 function startWorker() {
   var worker = cluster.fork();

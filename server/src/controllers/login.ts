@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import User from "../models/user";
-const bcrypt = require("bcrypt");
 
+const bcrypt = require("bcrypt");
 
 // Example of adding additional properties to SessionData using declaration merging
 

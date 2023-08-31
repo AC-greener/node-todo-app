@@ -3,7 +3,7 @@ import TodoItem from './components/TodoItem'
 import AddTodo from './components/AddTodo'
 import { getTodos, addTodo, updateTodo, deleteTodo } from './api'
 import { useNavigate } from "react-router-dom";
-import Upload from './components/Upload';
+// import Upload from './components/Upload';
 const App: React.FC = () => {
   const navigate = useNavigate();
   const [todos, setTodos] = useState<ITodo[]>([])
